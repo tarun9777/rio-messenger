@@ -3,6 +3,7 @@ package com.rio.messenger.api;
 
 import com.rio.messenger.bo.UserBO;
 import com.rio.messenger.exception.MessengerException;
+import com.rio.messenger.exception.UserException;
 import com.rio.messenger.http.response.ErrorResponse;
 import com.rio.messenger.http.response.MsgResponse;
 import com.rio.messenger.http.response.ResponseType;
@@ -30,9 +31,10 @@ public class AuthController {
         try {
             authService.addUser(userBO);
             return ResponseEntity.ok().body(new MsgResponse(ResponseType.SUCCESS));
-        } catch (MessengerException e){
+        } catch (UserException e){
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getErrorMessage()));
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body(new ErrorResponse("Something went wrong"));
         }
     }

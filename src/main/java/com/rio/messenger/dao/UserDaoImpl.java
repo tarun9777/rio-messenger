@@ -2,6 +2,7 @@ package com.rio.messenger.dao;
 
 import com.rio.messenger.entity.User;
 import com.rio.messenger.exception.MessengerException;
+import com.rio.messenger.exception.UserException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             session.save(user);
             session.flush();
         } catch (ConstraintViolationException e){
-            throw new MessengerException(null,"user already exists");
+            throw new UserException("user already exists");
         }
 
     }

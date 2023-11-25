@@ -11,6 +11,11 @@ public class MessengerException extends RuntimeException{
         this.errorMessage = errorMessage;
     }
 
+    public MessengerException(String errorMessage) {
+        super(errorMessage);
+        this.errorMessage = errorMessage;
+    }
+
     public String getErrorCode() {
         return errorCode;
     }
