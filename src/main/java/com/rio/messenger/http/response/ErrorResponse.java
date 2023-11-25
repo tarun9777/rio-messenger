@@ -1,6 +1,6 @@
 package com.rio.messenger.http.response;
 
-public class ErrorResponse extends MsgResponse {
+public class ErrorResponse extends StatusResponse {
 
     private String message;
 

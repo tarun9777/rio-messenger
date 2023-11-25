@@ -8,5 +8,7 @@ public interface AuthService {
 
     void authenticateUser(UserBO userBO) throws Exception;
 
+    void logout(UserBO userBO) throws Exception;
+
 
 }

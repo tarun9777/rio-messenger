@@ -1,9 +1,9 @@
 package com.rio.messenger.http.response;
 
-public class MsgResponse {
+public class StatusResponse {
     ResponseType status;
 
-    public MsgResponse(ResponseType status){
+    public StatusResponse(ResponseType status){
         this.status = status;
     }
 

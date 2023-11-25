@@ -37,7 +37,7 @@ public class SessionFilter implements Filter {
                 filterChain.doFilter(servletRequest,servletResponse);
             } else {
                 response.setStatus(440);
-                response.getOutputStream().write("Session expired".getBytes(StandardCharsets.UTF_8));
+                response.getOutputStream().write("No session found please login".getBytes(StandardCharsets.UTF_8));
                 return;
             }
 

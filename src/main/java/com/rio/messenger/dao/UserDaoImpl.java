@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -33,12 +36,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findById(String username){
+    public Optional<User> findById(String username){
         Session session = transactionManager.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username",username));
         User user = (User) criteria.uniqueResult();
-        if (user == null) throw new UserException("user not found");
-        return user;
+        return Optional.ofNullable(user);
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> findAll() {
+        Session session = transactionManager.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(User.class);
+        List<User> users = (List<User>)criteria.list();
+        return users;
+    }
+
+
 }

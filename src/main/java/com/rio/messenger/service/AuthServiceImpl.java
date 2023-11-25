@@ -6,6 +6,7 @@ import com.rio.messenger.bo.UserBO;
 import com.rio.messenger.cache.JedisClient;
 import com.rio.messenger.dao.UserDao;
 import com.rio.messenger.entity.User;
+import com.rio.messenger.exception.UserException;
 import com.rio.messenger.util.PasscodeHashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -45,9 +47,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional("MSG_TM")
     public void authenticateUser(UserBO userBO) throws Exception {
+        Optional<User> user = userDao.findById(userBO.getUsername());
+        if (!user.isPresent()) throw new UserException("User not found");
+        hashUtil.validatePasscode(user.get(),userBO);
+        jedisClient.addToCache(user.get().getUsername(), Base64.getEncoder().encodeToString(user.get().getUsername().getBytes(StandardCharsets.UTF_8)));
+    }
 
-        User user = userDao.findById(userBO.getUsername());
-        hashUtil.validatePasscode(user,userBO);
-        jedisClient.addToCache(user.getUsername(), Base64.getEncoder().encodeToString(user.getUsername().getBytes(StandardCharsets.UTF_8)));
+    @Override
+    public void logout(UserBO userBO) throws Exception {
+        jedisClient.deleteKey(userBO.getUsername());
     }
 }

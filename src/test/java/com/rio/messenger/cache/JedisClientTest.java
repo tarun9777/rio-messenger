@@ -40,14 +40,14 @@ public class JedisClientTest {
         String key = "123";
         String val = "qw123kd";
         jedis.setex(key,600,val);
-        String actual = jedisClient.getAndUpdateExpiry(key,700).get();
+        String actual = jedisClient.getAndUpdateAuthExpiry(key,700).get();
         Assertions.assertEquals(val,actual);
     }
 
     @Test
     void getAndUpdateExpiryTest_2(){
         String key = "pqr";
-        Optional<String> actual = jedisClient.getAndUpdateExpiry(key,700);
+        Optional<String> actual = jedisClient.getAndUpdateAuthExpiry(key,700);
         Assertions.assertTrue(actual.isEmpty());
     }
 }
