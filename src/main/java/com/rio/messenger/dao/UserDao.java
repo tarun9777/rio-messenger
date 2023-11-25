@@ -5,6 +5,8 @@ import com.rio.messenger.entity.User;
 public interface UserDao {
 
 
-    public void save(User user);
+    void save(User user);
+
+    User findById(String username);
 
 }

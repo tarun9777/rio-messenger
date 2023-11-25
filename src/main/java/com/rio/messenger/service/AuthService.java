@@ -4,5 +4,9 @@ import com.rio.messenger.bo.UserBO;
 
 public interface AuthService {
 
-    public void addUser(UserBO userBO) throws Exception;
+    void addUser(UserBO userBO) throws Exception;
+
+    void authenticateUser(UserBO userBO) throws Exception;
+
+
 }

@@ -39,6 +39,19 @@ public class AuthController {
         }
     }
 
+    @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<? extends MsgResponse> login(@RequestBody UserBO userBO){
+        try{
+            authService.authenticateUser(userBO);
+            return ResponseEntity.ok().body(new MsgResponse(ResponseType.SUCCESS));
+        }catch (UserException e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getErrorMessage()));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(new ErrorResponse("Something went wrong"));
+        }
+    }
+
 
 
 

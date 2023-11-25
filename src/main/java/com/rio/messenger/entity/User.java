@@ -9,9 +9,12 @@ import javax.persistence.Table;
 public class User {
 
     @Id
-    private final String username;
-    private final String salt;
-    private final String hash;
+    private String username;
+    private String salt;
+    private String hash;
+
+
+    public User(){}
 
     private User(String username, String salt ,String hash) {
         this.username = username;

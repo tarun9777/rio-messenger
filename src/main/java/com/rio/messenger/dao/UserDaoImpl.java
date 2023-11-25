@@ -3,7 +3,9 @@ package com.rio.messenger.dao;
 import com.rio.messenger.entity.User;
 import com.rio.messenger.exception.MessengerException;
 import com.rio.messenger.exception.UserException;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -28,6 +30,15 @@ public class UserDaoImpl implements UserDao {
         } catch (ConstraintViolationException e){
             throw new UserException("user already exists");
         }
+    }
 
+    @Override
+    public User findById(String username){
+        Session session = transactionManager.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("username",username));
+        User user = (User) criteria.uniqueResult();
+        if (user == null) throw new UserException("user not found");
+        return user;
     }
 }
