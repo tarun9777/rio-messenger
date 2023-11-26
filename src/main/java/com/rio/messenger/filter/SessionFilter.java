@@ -4,6 +4,7 @@ import com.rio.messenger.util.AuthUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -23,17 +24,22 @@ public class SessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        ContentCachingRequestWrapper request = new ContentCachingRequestWrapper((HttpServletRequest) servletRequest);
         if (request.getMethod().equals("POST")){
-            JSONObject body = new JSONObject(request.getReader().lines().collect(Collectors.joining()));
+            String token = request.getHeader("x-token");
+            String username = request.getHeader("x-username");
             HttpServletResponse response = (HttpServletResponse) servletResponse;
-            if (body.get("username") == null ){
-                response.setStatus(400);
-                response.getOutputStream().write("Invalid input".getBytes(StandardCharsets.UTF_8));
+            if (token == null || token.isEmpty()){
+                response.setStatus(401);
+                response.getOutputStream().write("auth token missing in header".getBytes(StandardCharsets.UTF_8));
                 return;
             }
-            String username = body.getString("username");
-            if (authUtil.isSessionActive(username)){
+            if (username == null || username.isEmpty()){
+                response.setStatus(401);
+                response.getOutputStream().write("username missing in header".getBytes(StandardCharsets.UTF_8));
+                return;
+            }
+            if (authUtil.isSessionActive(username,token)){
                 filterChain.doFilter(servletRequest,servletResponse);
             } else {
                 response.setStatus(440);

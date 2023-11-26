@@ -6,7 +6,7 @@ public interface AuthService {
 
     void addUser(UserBO userBO) throws Exception;
 
-    void authenticateUser(UserBO userBO) throws Exception;
+    String authenticateUser(UserBO userBO) throws Exception;
 
     void logout(UserBO userBO) throws Exception;
 

@@ -44,15 +44,15 @@ public class MessageServiceImpl implements MessageService {
                 .setMsg(messageBO.getText())
                 .setTo(messageBO.getTo())
                 .setTime(System.currentTimeMillis())
-                .setRead('N')
+                .setRead("N")
                 .build();
         messageDao.save(message);
     }
 
     @Override
     @Transactional("MSG_TM")
-    public List<MultipleMessagesFrom> getUnread(UserBO userBO) {
-        List<Message> messages = messageDao.getUnread(userBO.getUsername());
+    public List<MultipleMessagesFrom> getUnread(String username, UserBO userBO) {
+        List<Message> messages = messageDao.getUnread(userBO.getUsername(),username);
         if (messages.isEmpty()){
             return new ArrayList<>();
         }

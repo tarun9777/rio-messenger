@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -46,11 +47,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional("MSG_TM")
-    public void authenticateUser(UserBO userBO) throws Exception {
+    public String authenticateUser(UserBO userBO) throws Exception {
         Optional<User> user = userDao.findById(userBO.getUsername());
         if (!user.isPresent()) throw new UserException("User not found");
         hashUtil.validatePasscode(user.get(),userBO);
-        jedisClient.addToCache(user.get().getUsername(), Base64.getEncoder().encodeToString(user.get().getUsername().getBytes(StandardCharsets.UTF_8)));
+        String token = UUID.randomUUID().toString();
+        jedisClient.addToCache(user.get().getUsername(), token);
+        return token;
     }
 
     @Override

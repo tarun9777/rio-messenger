@@ -12,7 +12,7 @@ public interface MessageService {
 
     void sendMessage(MessageBO messageBO);
 
-    List<MultipleMessagesFrom> getUnread(UserBO userBO);
+    List<MultipleMessagesFrom> getUnread(String from, UserBO userBO);
 
     List<SingleMessageFrom> getHistory(HistoryRequest request);
 

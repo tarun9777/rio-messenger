@@ -32,6 +32,25 @@ public class JedisClient {
         }
     }
 
+    public Optional<String> getFromCache(String key){
+        try(Jedis jedis = factory.getJedisResource()){
+            String val = jedis.get(key);
+            if (val == null || val.isEmpty()) return Optional.empty();
+            return Optional.ofNullable(val);
+        } catch (Exception e){
+            throw new MessengerException("redis",e.getMessage());
+        }
+    }
+
+    public void updateKeyExpiry(String key,long seconds){
+        try(Jedis jedis = factory.getJedisResource()){
+            String val = jedis.get(key);
+            if (val != null && !val.isEmpty()) jedis.expire(key,seconds);
+        } catch (Exception e){
+            throw new MessengerException("redis",e.getMessage());
+        }
+    }
+
     public void deleteKey(String key){
         try(Jedis jedis = factory.getJedisResource()){
             jedis.del(key);
@@ -40,34 +59,4 @@ public class JedisClient {
         }
     }
 
-//    public void addToCache(String key, Map<String,String> value, long seconds){
-//        try(Jedis jedis = factory.getJedisResource()){
-//            jedis.hset(key,value);
-//            jedis.expire(key,seconds);
-//        } catch (Exception e){
-//            throw new MessengerException("redis",e.getMessage());
-//        }
-//    }
-//
-//    public Map<String,String> getUserFromCache(String key){
-//        try(Jedis jedis = factory.getJedisResource()){
-//            return jedis.ge
-//        } catch (Exception e){
-//            throw new MessengerException("redis",e.getMessage());
-//        }
-//    }
-
-    public Optional<String> getAndUpdateAuthExpiry(String key, long seconds){
-        try(Jedis jedis = factory.getJedisResource()){
-            String val = jedis.get(key);
-            if (val == null || val.isEmpty()){
-                return Optional.empty();
-            } else {
-                jedis.setex(key,seconds,val);
-            }
-            return Optional.of(val);
-        } catch (Exception e){
-            throw new MessengerException("redis",e.getMessage());
-        }
-    }
 }

@@ -40,8 +40,8 @@ public class AuthController {
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends StatusResponse> login(@RequestBody UserBO userBO){
         try{
-            authService.authenticateUser(userBO);
-            return ResponseEntity.ok().body(new StatusResponse(ResponseType.SUCCESS));
+            String token = authService.authenticateUser(userBO);
+            return ResponseEntity.ok().header("x-token",token).body(new StatusResponse(ResponseType.SUCCESS));
         }catch (UserException e){
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getErrorMessage()));
         } catch (Exception e){

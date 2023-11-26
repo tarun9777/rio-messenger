@@ -10,5 +10,5 @@ public interface MessageDao {
 
     List<Message> findByUsers(String from, String to);
 
-    List<Message> getUnread(String user);
+    List<Message> getUnread(String from,String to);
 }

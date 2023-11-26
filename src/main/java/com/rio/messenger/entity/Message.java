@@ -21,12 +21,12 @@ public class Message {
     private String msg;
     @Column(name = "time_sent")
     private long time;
-    @Column(name = "read")
-    private char read;
+    @Column(name = "is_read")
+    private String read;
 
     public Message(){}
 
-    public Message(String id, String from, String to, String msg, long time,char read) {
+    public Message(String id, String from, String to, String msg, long time,String read) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -81,11 +81,11 @@ public class Message {
         this.time = time;
     }
 
-    public char getRead() {
+    public String getRead() {
         return read;
     }
 
-    public void setRead(char read) {
+    public void setRead(String read) {
         this.read = read;
     }
 
@@ -101,7 +101,7 @@ public class Message {
 
         private long time;
 
-        private char read;
+        private String read;
 
         private MessageBuilder(){}
 
@@ -134,7 +134,7 @@ public class Message {
             return this;
         }
 
-        public MessageBuilder setRead(char read) {
+        public MessageBuilder setRead(String read) {
             this.read = read;
             return this;
         }

@@ -36,18 +36,18 @@ public class JedisClientTest {
     }
 
     @Test
-    void getAndUpdateExpiryTest_1(){
+    void getFromCacheTest_1(){
         String key = "123";
         String val = "qw123kd";
         jedis.setex(key,600,val);
-        String actual = jedisClient.getAndUpdateAuthExpiry(key,700).get();
+        String actual = jedisClient.getFromCache(key).get();
         Assertions.assertEquals(val,actual);
     }
 
     @Test
-    void getAndUpdateExpiryTest_2(){
+    void getFromCacheTest_2(){
         String key = "pqr";
-        Optional<String> actual = jedisClient.getAndUpdateAuthExpiry(key,700);
+        Optional<String> actual = jedisClient.getFromCache(key);
         Assertions.assertTrue(actual.isEmpty());
     }
 }

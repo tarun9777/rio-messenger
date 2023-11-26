@@ -36,22 +36,23 @@ public class MessageDaoImpl implements MessageDao{
         Criterion c1 = Restrictions.and(Restrictions.eq("from",user1), Restrictions.eq("to", user2));
         Criterion c2 = Restrictions.and(Restrictions.eq("from",user2), Restrictions.eq("to", user1));
         criteria.add(Restrictions.or(c1,c2));
-        criteria.addOrder(Order.desc("time"));
+        criteria.addOrder(Order.asc("time"));
         List<Message> messages = (List<Message>) criteria.list();
         return messages;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Message> getUnread(String user) {
+    public List<Message> getUnread(String from, String to) {
         Session session = transactionManager.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Message.class);
-        criteria.add(Restrictions.eq("to",user));
+        criteria.add(Restrictions.eq("to",to));
+        criteria.add(Restrictions.eq("from",from));
         criteria.add(Restrictions.eq("read","N"));
-        criteria.addOrder(Order.desc("time"));
+        criteria.addOrder(Order.asc("time"));
         List<Message> messages = (List<Message>) criteria.list();
         for (Message m : messages){
-            m.setRead('Y');
+            m.setRead("Y");
             session.update(m);
         }
         return messages;
