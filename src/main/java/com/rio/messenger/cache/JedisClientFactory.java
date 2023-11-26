@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 
+/**
+ * this class act as factory to create redis connections from redis pool
+ */
 @Component
 public class JedisClientFactory {
 

@@ -19,6 +19,13 @@ import java.util.Base64;
 @Component
 public class PasscodeHashUtil {
 
+
+    /**
+     * This method will generate the hash and salt for the raw text passcode.
+     * @param passcode
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public HashedPasscode getPasscodeHash(String passcode) throws NoSuchAlgorithmException {
         SecureRandom sr = new SecureRandom();
         byte[] salt = new byte[16];
@@ -43,6 +50,12 @@ public class PasscodeHashUtil {
 
     }
 
+    /**
+     * This method will validate the user input passcode with passcode present in db
+     * @param user
+     * @param userBO
+     * @throws NoSuchAlgorithmException
+     */
     public void validatePasscode(User user, UserBO userBO) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         md.update(decodeToByteArray(user.getSalt()));

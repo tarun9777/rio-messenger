@@ -7,9 +7,18 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class ServletFilterConfig {
 
+
+    /**
+     * This bean creation will add the servlet filter to
+     * validate the active session for the logged-in users.
+     *
+     * @param authUtil
+     * @return FilterRegistrationBean
+     */
     @Bean
     @Autowired
     public FilterRegistrationBean<SessionFilter> sessionFilter(AuthUtil authUtil){

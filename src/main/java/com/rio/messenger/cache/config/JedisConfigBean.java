@@ -9,6 +9,9 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
 
+/**
+ * this class is the configuration holder for redis db (used as cache)
+ */
 @Component
 public class JedisConfigBean {
 

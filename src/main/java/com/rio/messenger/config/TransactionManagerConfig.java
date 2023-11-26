@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Properties;
 
 
+/**
+ * this class will configure the hibernate transaction manager and the hibernate session factory.
+ */
 @Configuration
 @EnableTransactionManagement
 public class TransactionManagerConfig {

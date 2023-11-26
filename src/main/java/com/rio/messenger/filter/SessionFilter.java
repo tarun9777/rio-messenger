@@ -1,9 +1,6 @@
 package com.rio.messenger.filter;
 
 import com.rio.messenger.util.AuthUtil;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.*;
@@ -11,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
 
 
 public class SessionFilter implements Filter {
@@ -22,6 +18,15 @@ public class SessionFilter implements Filter {
         this.authUtil = authUtil;
     }
 
+    /**
+     * This method will validate the active session for a user using the auth-token and username provided in the http header.
+     *
+     * @param servletRequest
+     * @param servletResponse
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         ContentCachingRequestWrapper request = new ContentCachingRequestWrapper((HttpServletRequest) servletRequest);
