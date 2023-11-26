@@ -15,7 +15,7 @@ public class ServletFilterConfig {
     public FilterRegistrationBean<SessionFilter> sessionFilter(AuthUtil authUtil){
         FilterRegistrationBean<SessionFilter> frb = new FilterRegistrationBean<>();
         frb.setFilter(new SessionFilter(authUtil));
-        frb.addUrlPatterns("/get/unread","/send/text/user");
+        frb.addUrlPatterns("/get/unread","/send/text/user","/logout");
         return frb;
     }
 }

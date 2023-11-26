@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -51,8 +52,11 @@ public class AuthController {
     }
 
     @PostMapping(value = "/logout",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<? extends StatusResponse> logout(@RequestBody UserBO userBO){
+    public ResponseEntity<? extends StatusResponse> logout(@RequestBody UserBO userBO, @RequestHeader("x-username") String username){
         try{
+            if (!username.equals(userBO.getUsername())){
+                throw new UserException("invalid input");
+            }
             authService.logout(userBO);
             return ResponseEntity.ok().body(new StatusResponse(ResponseType.SUCCESS));
         }catch (UserException e){
@@ -62,10 +66,4 @@ public class AuthController {
             return ResponseEntity.internalServerError().body(new ErrorResponse("Something went wrong"));
         }
     }
-
-
-
-
-
-
 }
