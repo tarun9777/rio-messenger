@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  mysql:
+    container_name: db
+    image: mysql
+    networks:
+      - messenger-network
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
+  redis:
+    container_name: cache
+    image: redis
+    networks:
+      - messenger-network
+    ports:
+      - 6379:6379
+
+  messenger:
+    build: .
+    image: messenger:1.0
+    container_name: messenger
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - messenger-network
+    ports:
+      - 8081:8081
+
+networks:
+  messenger-network:
+    name: messenger-network
